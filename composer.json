@@ -1,17 +1,17 @@
 {
-    "name": "eawardie/data-grid-laravel",
-    "description": "Data table package used to build advanced tables with a matching front-end package. Allows for searching, filtering, paging & some other advanced features. ",
+    "name": "fitt-tech/data-grid-laravel",
+    "description": "Data table package used to build advanced tables with a matching front-end package. Allows for searching, filtering, paging & more",
     "keywords": [
-        "eawardie",
+        "fitt",
         "laravel",
         "data-grid"
     ],
-    "homepage": "https://github.com/EA-Wardie/data-grid-laravel",
+    "homepage": "https://github.com/fitt-tech/data-grid-laravel",
     "license": "MIT",
     "authors": [
         {
-            "name": "eawardie",
-            "email": "56725833+EA-Wardie@users.noreply.github.com",
+            "name": "fitttech",
+            "email": "145565462+fitt-tech@users.noreply.github.com",
             "role": "Developer"
         }
     ],
@@ -28,16 +28,16 @@
     },
     "autoload": {
         "psr-4": {
-            "Eawardie\\DataGrid\\": "src"
+            "Fitttech\\DataGrid\\": "src"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Eawardie\\DataGrid\\DataGridServiceProvider"
+                "Fitttech\\DataGrid\\DataGridServiceProvider"
             ],
             "aliases": {
-                "DataGrid": "Eawardie\\DataGrid\\Facades\\DataGrid"
+                "DataGrid": "Fitttech\\DataGrid\\Facades\\DataGrid"
             }
         }
     },
