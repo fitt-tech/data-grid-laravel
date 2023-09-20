@@ -1,0 +1,46 @@
+{
+    "name": "eawardie/data-grid-laravel",
+    "description": "Data table package used to build advanced tables with a matching front-end package. Allows for searching, filtering, paging & some other advanced features. ",
+    "keywords": [
+        "eawardie",
+        "laravel",
+        "data-grid"
+    ],
+    "homepage": "https://github.com/EA-Wardie/data-grid-laravel",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "eawardie",
+            "email": "56725833+EA-Wardie@users.noreply.github.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=7.4",
+        "ianrothmann/laravel-model-convention": "^0.9",
+        "spatie/laravel-package-tools": "^1.9.2",
+        "ext-json": "*"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^6.25",
+        "phpunit/phpunit": "^9.5",
+        "spatie/laravel-ray": "^1.26"
+    },
+    "autoload": {
+        "psr-4": {
+            "Eawardie\\DataGrid\\": "src"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Eawardie\\DataGrid\\DataGridServiceProvider"
+            ],
+            "aliases": {
+                "DataGrid": "Eawardie\\DataGrid\\Facades\\DataGrid"
+            }
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
