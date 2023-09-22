@@ -3,7 +3,7 @@
 namespace Fitttech\DataGrid\Facades;
 
 use Closure;
-use Eawardie\DataGrid\DataGridService;
+use Fitttech\DataGrid\DataGridService;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Facade;
 
@@ -31,7 +31,7 @@ use Illuminate\Support\Facades\Facade;
  * @method DataGridService map()
  * @method DataGridService get()
  *
- * @see \Eawardie\DataGrid\DataGridService
+ * @see \Fitttech\DataGrid\DataGridService
  */
 class DataGrid extends Facade
 {

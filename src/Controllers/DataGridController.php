@@ -3,7 +3,7 @@
 namespace Fitttech\DataGrid\Controllers;
 
 use App\Http\Controllers\Controller;
-use Eawardie\DataGrid\Models\DataGrid;
+use Fitttech\DataGrid\Models\DataGrid;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 

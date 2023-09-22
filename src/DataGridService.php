@@ -3,11 +3,11 @@
 namespace Fitttech\DataGrid;
 
 use Closure;
-use Eawardie\DataGrid\Definitions\ColumnDefinition;
-use Eawardie\DataGrid\Definitions\IconDefinition;
-use Eawardie\DataGrid\Definitions\ViewDefinition;
-use Eawardie\DataGrid\Models\DataGrid;
-use Eawardie\DataGrid\Traits\DynamicCompare;
+use Fitttech\DataGrid\Definitions\ColumnDefinition;
+use Fitttech\DataGrid\Definitions\IconDefinition;
+use Fitttech\DataGrid\Definitions\ViewDefinition;
+use Fitttech\DataGrid\Models\DataGrid;
+use Fitttech\DataGrid\Traits\DynamicCompare;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;

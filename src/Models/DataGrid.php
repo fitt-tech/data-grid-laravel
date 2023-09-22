@@ -12,7 +12,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 
 /**
- * Eawardie\DataGrid\Models\DataGrid
+ * Fitttech\DataGrid\Models\DataGrid
  *
  * @property int $id
  * @property int|null $ownerid

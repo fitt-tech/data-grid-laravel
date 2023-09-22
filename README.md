@@ -1,8 +1,8 @@
 # Data Grid Laravel
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/fitt-tech/data-grid-laravel.svg?style=flat-square)](https://packagist.org/packages/eawardie/data-grid-laravel)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/fitt-tech/data-grid-laravel.svg?style=flat-square)](https://packagist.org/packages/fitt-tech/data-grid-laravel)
 
-[//]: # ([![Total Downloads]&#40;https://img.shields.io/packagist/dt/eawardie/data-grid-laravel.svg?style=flat-square&#41;]&#40;https://packagist.org/packages/eawardie/data-grid-laravel&#41;)
+[//]: # ([![Total Downloads]&#40;https://img.shields.io/packagist/dt/fitt-tech/data-grid-laravel.svg?style=flat-square&#41;]&#40;https://packagist.org/packages/eawardie/data-grid-laravel&#41;)
 
 ### Data grid package used to build advanced grids with a matching front-end package.
 

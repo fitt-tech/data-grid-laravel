@@ -3,7 +3,7 @@
 namespace Fitttech\DataGrid\Definitions;
 
 use Closure;
-use Eawardie\DataGrid\Constants\DataGridConstants;
+use Fitttech\DataGrid\Constants\DataGridConstants;
 use Exception;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Str;
