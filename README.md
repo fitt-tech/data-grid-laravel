@@ -1,6 +1,6 @@
 # Data Grid Laravel
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/eawardie/data-grid-laravel.svg?style=flat-square)](https://packagist.org/packages/eawardie/data-grid-laravel)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/fitt-tech/data-grid-laravel.svg?style=flat-square)](https://packagist.org/packages/eawardie/data-grid-laravel)
 
 [//]: # ([![Total Downloads]&#40;https://img.shields.io/packagist/dt/eawardie/data-grid-laravel.svg?style=flat-square&#41;]&#40;https://packagist.org/packages/eawardie/data-grid-laravel&#41;)
 
