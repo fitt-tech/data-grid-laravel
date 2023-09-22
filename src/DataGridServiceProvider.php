@@ -1,6 +1,6 @@
 <?php
 
-namespace Eawardie\DataGrid;
+namespace Fitttech\DataGrid;
 
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;

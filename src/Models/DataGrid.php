@@ -1,6 +1,6 @@
 <?php
 
-namespace Eawardie\DataGrid\Models;
+namespace Fitttech\DataGrid\Models;
 
 use App\Models\User\User;
 use Eloquent;

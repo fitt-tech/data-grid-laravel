@@ -1,6 +1,6 @@
 <?php
 
-namespace Eawardie\DataGrid\Facades;
+namespace Fitttech\DataGrid\Facades;
 
 use Closure;
 use Eawardie\DataGrid\DataGridService;

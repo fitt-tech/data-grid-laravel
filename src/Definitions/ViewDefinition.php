@@ -1,6 +1,6 @@
 <?php
 
-namespace Eawardie\DataGrid\Definitions;
+namespace Fitttech\DataGrid\Definitions;
 
 use Exception;
 use Illuminate\Contracts\Support\Arrayable;

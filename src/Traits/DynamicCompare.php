@@ -1,6 +1,6 @@
 <?php
 
-namespace Eawardie\DataGrid\Traits;
+namespace Fitttech\DataGrid\Traits;
 
 use Exception;
 

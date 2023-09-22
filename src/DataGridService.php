@@ -1,6 +1,6 @@
 <?php
 
-namespace Eawardie\DataGrid;
+namespace Fitttech\DataGrid;
 
 use Closure;
 use Eawardie\DataGrid\Definitions\ColumnDefinition;

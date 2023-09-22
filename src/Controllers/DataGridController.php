@@ -1,6 +1,6 @@
 <?php
 
-namespace Eawardie\DataGrid\Controllers;
+namespace Fitttech\DataGrid\Controllers;
 
 use App\Http\Controllers\Controller;
 use Eawardie\DataGrid\Models\DataGrid;

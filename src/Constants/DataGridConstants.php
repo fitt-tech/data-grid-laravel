@@ -1,6 +1,6 @@
 <?php
 
-namespace Eawardie\DataGrid\Constants;
+namespace Fitttech\DataGrid\Constants;
 
 class DataGridConstants
 {
