@@ -33,6 +33,7 @@ class ColumnDefinition implements Arrayable
     private bool $subtitleIsAggregate = false;
     private bool $avatarPreview = true;
     private bool $subtitleIsRaw = false;
+    private ?string $size = null;
 
     //all column types
     private const COLUMN_TYPES = ['text', 'email', 'number', 'perc', 'timestamp', 'enum', 'icon'];
@@ -219,6 +220,18 @@ class ColumnDefinition implements Arrayable
         return $this;
     }
 
+    /**
+     * The size will default to px unless specified otherwise
+     * @param string $size
+     * @return $this
+     */
+    public function size(string $size): ColumnDefinition
+    {
+        $this->size = $size;
+
+        return $this;
+    }
+
     //function to specify whether the column can be used in search queries
     public function searchable(bool $searchable = true): ColumnDefinition
     {
@@ -275,6 +288,7 @@ class ColumnDefinition implements Arrayable
             'subtitleLabel' => $this->subtitleLabel,
             'subtitleIsRaw' => $this->subtitleIsRaw,
             'subtitleIsAggregate' => $this->subtitleIsAggregate,
+            'size' => $this->size,
         ];
     }
 

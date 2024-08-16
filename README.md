@@ -16,17 +16,17 @@ You can install the package via composer:
 composer require fitt-tech/data-grid-laravel
 ```
 
-Please also note that a companion front-end [package](https://github.com/fitt-tech/data-grid-vuetify) is required to use this package to it's fullest:
+Please also note that a companion front-end [package](https://www.npmjs.com/package/vuetify-data-grid) is required to use this package to it's fullest:
 
 ```bash
-npm install data-grid-vuetify
+npm install vuetify-data-grid
 ```
 
 ## Info
 
 The primary responsibility of this package is to provide an easily understandable development path to create simple or advanced data grids.
 Although this package can be used in a standalone fashion it is recommended to be used with its companion front-end
-package [data-grid-vue](https://github.com/fitt-tech/data-grid-vue).
+package [vuetify-data-grid](https://www.npmjs.com/package/vuetify-data-grid).
 This front-end package provides all the necessary tools for rendering data grids on your front-end including making use of all the simple and advanced features
 as
 provided by this package.

@@ -198,7 +198,7 @@ class DataGridService
      */
     //function to add a simple column
     //has less functionality but generally less code to use
-    public function addColumn(string $value, string $label, string $type, bool $searchable = true, bool $sortable = true, bool $hidden = false): self
+    public function addColumn(string $value, string $label, string $type, bool $searchable = true, bool $sortable = true, bool $hidden = false, string $size = null): self
     {
         $index = count($this->columns);
         $basicValueArray = explode('.', $value);
@@ -209,7 +209,7 @@ class DataGridService
             $enumerators = $this->autoGenerateEnumerators($value);
         }
 
-        $this->column($basicValue, $value, $label, $type, $index, $searchable, $sortable, [], $enumerators, $hidden);
+        $this->column($basicValue, $value, $label, $type, $index, $searchable, $sortable, [], $enumerators, $hidden, $size);
 
         return $this;
     }
@@ -220,7 +220,7 @@ class DataGridService
     //function to add an icon column
     //icon columns only contain icons
     //can also take the advanced IconDefinition class as a closure for fine grain icon condition control per item
-    public function addIconColumn(string $value, string $label, $icon, string $color = 'grey', bool $searchable = true, bool $sortable = true, bool $hidden = false): self
+    public function addIconColumn(string $value, string $label, $icon, string $color = 'grey', bool $searchable = true, bool $sortable = true, bool $hidden = false, string $size = '50px'): self
     {
         $index = count($this->columns);
         $basicValueArray = explode('.', $value);
@@ -240,16 +240,16 @@ class DataGridService
             $iconMap = $icon(new IconDefinition())->toArray();
         }
 
-        $this->column($basicValue, $value, $label, 'icon', $index, $searchable, $sortable, $iconMap, [], $hidden);
+        $this->column($basicValue, $value, $label, 'icon', $index, $searchable, $sortable, $iconMap, [], $hidden, $size);
 
         return $this;
     }
 
-    public function addCustomColumn(string $identifier, string $label, bool $hidden = false): self
+    public function addCustomColumn(string $identifier, string $label, bool $hidden = false, string $size = null): self
     {
         $index = count($this->columns);
 
-        $this->column($identifier, $identifier, $label, 'custom', $index, false, false, [], [], $hidden);
+        $this->column($identifier, $identifier, $label, 'custom', $index, false, false, [], [], $hidden, $size);
 
         return $this;
     }
@@ -430,8 +430,6 @@ class DataGridService
         } else {
             $this->sortBy = session($this->ref)['sortBy'] ?? [];
         }
-
-//        dd(get_class( $this->query));
 
 //        if ($this->query instanceof \Illuminate\Database\Query\Builder) {
 //            if ($this->query->getQuery()) {
@@ -908,9 +906,12 @@ class DataGridService
     //generates avatar URLs based on previously selected avatar values
     private function generateAvatarUrl($item, $value): ?string
     {
-        $disk = $item[$value . '_file_disk'];
-        $key = $item[$value . '_file_key'];
-        $baseUrl = $item[$value . '_file_base_url'];
+        $disk = null;
+        if ($this->query instanceof \Illuminate\Database\Eloquent\Builder) {
+            $disk = $item[$value . '_file_disk'];
+            $key = $item[$value . '_file_key'];
+            $baseUrl = $item[$value . '_file_base_url'];
+        }
 
         if (isset($disk) && $disk === 's3') {
             return $baseUrl . '/' . $key;
@@ -970,7 +971,8 @@ class DataGridService
         bool   $sortable = false,
         array  $iconMap = [],
         array  $enumerators = [],
-        bool   $hidden = false
+        bool   $hidden = false,
+        string $size = null
     )
     {
         $this->columns[] = [
@@ -989,6 +991,7 @@ class DataGridService
             'iconMap' => $iconMap,
             'enumerators' => $enumerators,
             'timestampFormat' => 'D MMMM YYYY',
+            'size' => $size,
         ];
     }
 
@@ -1026,5 +1029,3 @@ class DataGridService
         }
     }
 }
-
-
