@@ -20,7 +20,7 @@ use Throwable;
 class DataGridService
 {
     //all data grid properties
-    private Builder $query;
+    private $query;
     private ?Collection $existingConfig;
     private ?Collection $request;
     private ?string $ref;
@@ -65,16 +65,20 @@ class DataGridService
 
     //sets the query to be used by the data grid
     //when query of type relation is used, use the getQuery() helper function on the original query
-    public function forQuery(Builder $query): self
+    public function forQuery($query): self
     {
-        $this->setQuery($query);
-        $this->handleConfig();
+        if ($query instanceof \Illuminate\Database\Eloquent\Builder || $query instanceof \Illuminate\Database\Query\Builder) {
+            $this->setQuery($query);
+            $this->handleConfig();
 
-        return $this;
+            return $this;
+        } else {
+            throw new Exception('The query is not an instance of Illuminate\Database\Eloquent\Builder or Illuminate\Database\Query\Builder');
+        }
     }
 
     //returns the query of the data grid
-    public function getQuery(): Builder
+    public function getQuery()
     {
         return $this->query;
     }
@@ -194,7 +198,7 @@ class DataGridService
      */
     //function to add a simple column
     //has less functionality but generally less code to use
-    public function addColumn(string $value, string $label, string $type, bool $searchable = true, bool $sortable = true, bool $hidden = false): self
+    public function addColumn(string $value, string $label, string $type, bool $searchable = true, bool $sortable = true, bool $hidden = false, string $size = null): self
     {
         $index = count($this->columns);
         $basicValueArray = explode('.', $value);
@@ -205,7 +209,7 @@ class DataGridService
             $enumerators = $this->autoGenerateEnumerators($value);
         }
 
-        $this->column($basicValue, $value, $label, $type, $index, $searchable, $sortable, [], $enumerators, $hidden);
+        $this->column($basicValue, $value, $label, $type, $index, $searchable, $sortable, [], $enumerators, $hidden, $size);
 
         return $this;
     }
@@ -216,7 +220,7 @@ class DataGridService
     //function to add an icon column
     //icon columns only contain icons
     //can also take the advanced IconDefinition class as a closure for fine grain icon condition control per item
-    public function addIconColumn(string $value, string $label, $icon, string $color = 'grey', bool $searchable = true, bool $sortable = true, bool $hidden = false): self
+    public function addIconColumn(string $value, string $label, $icon, string $color = 'grey', bool $searchable = true, bool $sortable = true, bool $hidden = false, string $size = '50px'): self
     {
         $index = count($this->columns);
         $basicValueArray = explode('.', $value);
@@ -236,16 +240,16 @@ class DataGridService
             $iconMap = $icon(new IconDefinition())->toArray();
         }
 
-        $this->column($basicValue, $value, $label, 'icon', $index, $searchable, $sortable, $iconMap, [], $hidden);
+        $this->column($basicValue, $value, $label, 'icon', $index, $searchable, $sortable, $iconMap, [], $hidden, $size);
 
         return $this;
     }
 
-    public function addCustomColumn(string $identifier, string $label, bool $hidden = false): self
+    public function addCustomColumn(string $identifier, string $label, bool $hidden = false, string $size = null): self
     {
         $index = count($this->columns);
 
-        $this->column($identifier, $identifier, $label, 'custom', $index, false, false, [], [], $hidden);
+        $this->column($identifier, $identifier, $label, 'custom', $index, false, false, [], [], $hidden, $size);
 
         return $this;
     }
@@ -324,11 +328,16 @@ class DataGridService
 
     public function load(...$relationships): self
     {
-        if (is_array($relationships[0])) {
-            $this->loadRelationships = $relationships[0];
+        if ($this->query instanceof \Illuminate\Database\Eloquent\Builder) {
+            if (is_array($relationships[0])) {
+                $this->loadRelationships = $relationships[0];
+            } else {
+                $this->loadRelationships = $relationships;
+            }
         } else {
-            $this->loadRelationships = $relationships;
+            throw new Exception('The query must be an instance of Illuminate\Database\Eloquent\Builder to be able to load relationships');
         }
+
 
         return $this;
     }
@@ -422,8 +431,40 @@ class DataGridService
             $this->sortBy = session($this->ref)['sortBy'] ?? [];
         }
 
-        $orders = $this->query->getQuery()->orders;
-        $this->query->getQuery()->orders = [];
+//        dd(get_class( $this->query));
+
+//        if ($this->query instanceof \Illuminate\Database\Query\Builder) {
+//            if ($this->query->getQuery()) {
+//                $orders = $this->query->getQuery()->orders;
+//                $this->query->getQuery()->orders = [];
+//            } else {
+//                $orders = $this->query->orders;
+//                $this->query->orders = [];
+//            }
+//        } else {
+//            throw new Exception('The query is not an instance of Illuminate\Database\Query\Builder');
+//        }
+
+        if ($this->query instanceof \Illuminate\Database\Eloquent\Builder) {
+            $queryBuilder = $this->query->getQuery();
+
+            if (isset($queryBuilder->orders)) {
+                $orders = $queryBuilder->orders;
+                $queryBuilder->orders = [];
+            } else {
+                $orders = [];
+            }
+        } elseif ($this->query instanceof \Illuminate\Database\Query\Builder) {
+            if (isset($this->query->orders)) {
+                $orders = $this->query->orders;
+                $this->query->orders = [];
+            } else {
+                $orders = [];
+            }
+        } else {
+            throw new Exception('The query is not an instance of Illuminate\Database\Eloquent\Builder or Illuminate\Database\Query\Builder');
+        }
+
         $hasExistingOrders = $orders && count($orders) > 0;
         $hasUserSort = $this->request->has('sortBy') && count($this->request->get('sortBy')) > 0;
 
@@ -572,7 +613,13 @@ class DataGridService
 
     private function getCountForPagination(): int
     {
-        return $this->query->toBase()->getCountForPagination();
+        if ($this->query instanceof \Illuminate\Database\Eloquent\Builder) {
+            return $this->query->toBase()->getCountForPagination();
+        } elseif ($this->query instanceof \Illuminate\Database\Query\Builder) {
+            return $this->query->getCountForPagination();
+        } else {
+            throw new Exception('The query is not an instance of Illuminate\Database\Eloquent\Builder or Illuminate\Database\Query\Builder');
+        }
     }
 
     //selects all required values for items to be displayed on the front-end
@@ -631,6 +678,9 @@ class DataGridService
                 $column = collect($this->columns)->firstWhere('value', $value);
                 if (!$column) {
                     $column = collect($this->columns)->firstWhere('rawValue', $value);
+                }
+                if (!$column) {
+                    throw new Exception("The following value in your query " . $value . " does not have a corresponding column in your grid");
                 }
 
                 $innerValue = $column['isRaw'] ? $column['value'] : $column['rawValue'];
@@ -733,7 +783,7 @@ class DataGridService
 
                         //find a better solution for time inclusive dates
                         if ($column['type'] === 'timestamp' && $operator === '=') {
-                            if($filter['value'] != null) {
+                            if ($filter['value'] != null) {
                                 $operator = 'LIKE';
                                 $filter['value'] .= '%';
                             } else {
@@ -750,7 +800,7 @@ class DataGridService
                             $comparative = $column['rawValue'];
                         }
 
-                        if($filter['value'] === ' NULL') {
+                        if ($filter['value'] === ' NULL') {
                             $evaluation = $comparative . ' ' . $operator . $filter['value'];
                         } else {
                             $evaluation = $comparative . ' ' . $operator . ' "' . $filter['value'] . '"';
@@ -832,7 +882,8 @@ class DataGridService
         $this->items = $modifiedItems;
     }
 
-    private function setLayouts() {
+    private function setLayouts()
+    {
         if (count($this->existingConfig['layouts']) > 0) {
             $this->layouts = collect($this->layouts)->concat($this->existingConfig['layouts'])->toArray();
         }
@@ -853,11 +904,26 @@ class DataGridService
     //generates avatar URLs based on previously selected avatar values
     private function generateAvatarUrl($item, $value): ?string
     {
-        $disk = $item[$value . '_file_disk'];
-        $key = $item[$value . '_file_key'];
-        $baseUrl = $item[$value . '_file_base_url'];
+        $disk = null;
+        if ($this->query instanceof \Illuminate\Database\Eloquent\Builder) {
+            $disk = $item[$value . '_file_disk'];
+            $key = $item[$value . '_file_key'];
+            $baseUrl = $item[$value . '_file_base_url'];
+        }
 
-        if ($disk === 's3') {
+        if ($this->query instanceof \Illuminate\Database\Query\Builder) {
+            if (is_array($item)) {
+                $disk = $item[$value . '_file_disk'];
+                $key = $item[$value . '_file_key'];
+                $baseUrl = $item[$value . '_file_base_url'];
+            } elseif (is_object($item)) {
+                $disk = $item->{$value . '_file_disk'};
+                $key = $item->{$value . '_file_key'};
+                $baseUrl = $item->{$value . '_file_base_url'};
+            }
+        }
+
+        if (isset($disk) && $disk === 's3') {
             return $baseUrl . '/' . $key;
         } else {
             if ($disk && $key) {
@@ -915,7 +981,8 @@ class DataGridService
         bool   $sortable = false,
         array  $iconMap = [],
         array  $enumerators = [],
-        bool   $hidden = false
+        bool   $hidden = false,
+        string $size = null
     )
     {
         $this->columns[] = [
@@ -934,6 +1001,7 @@ class DataGridService
             'iconMap' => $iconMap,
             'enumerators' => $enumerators,
             'timestampFormat' => 'D MMMM YYYY',
+            'size' => $size,
         ];
     }
 
@@ -971,3 +1039,4 @@ class DataGridService
         }
     }
 }
+
