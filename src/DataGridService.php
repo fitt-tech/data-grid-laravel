@@ -819,6 +819,10 @@ class DataGridService
     //table uses 50 items by default
     private function applyPaging()
     {
+        if($this->page > $this->totalPages) {
+            $this->page = 1;
+        }
+
         if ($this->itemsPerPage > 0) {
             $this->query->skip(($this->page - 1) * $this->itemsPerPage)
                 ->take($this->queryInstance->limit ?? $this->itemsPerPage);
