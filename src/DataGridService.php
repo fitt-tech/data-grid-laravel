@@ -421,6 +421,10 @@ class DataGridService
         } else {
             $this->search = session($this->ref)['search'] ?? $defaultSearch;
         }
+
+        if(isset($this->search['term'])) {
+            $this->search['term'] = trim($this->search['term']);
+        }
     }
 
     private function prepareOrderBy()
