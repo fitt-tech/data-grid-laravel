@@ -422,8 +422,12 @@ class DataGridService
             $this->search = session($this->ref)['search'] ?? $defaultSearch;
         }
 
-        if(isset($this->search['term'])) {
-            $this->search['term'] = trim($this->search['term']);
+        if(isset($this->search['queries'])) {
+            $this->search['queries'] = collect($this->search['queries'])->map(function ($searchTerm) {
+                return collect($searchTerm)->map(function ($term) {
+                    return trim($term);
+                })->toArray();
+            })->toArray();
         }
     }
 
